@@ -1,6 +1,20 @@
 <?php
 if(!defined('OSTCLIENTINC') || !$thisclient || !$ticket || !$ticket->checkUserAccess($thisclient)) die('Access Denied!');
 
+// if set, close the ticket
+if(isset($_GET['action'])) {
+        if(($_GET['action'] == 'close')) {
+                if($thisclient->getId() == $ticket->getUserId() && $ticket->getStatus() != "Resolved" && $ticket->getStatus() != "Closed") { // only ticket owners can close the ticket (and only if not already closed)
+                        $ticket->setStatus(3); // equivalent to status = closed
+                        $ticket->setStaffId(8); // new user "SYSTEM"
+                }
+        }
+        else {
+        echo "Not possible";
+        }
+}
+
+
 $info=($_POST && $errors)?Format::htmlchars($_POST):array();
 
 $dept = $ticket->getDept();
@@ -45,6 +59,8 @@ if ($thisclient && $thisclient->isGuest()
         && $thisclient->getId() == $ticket->getUserId()) { ?>
                 <a class="action-button" href="tickets.php?a=edit&id=<?php
                      echo $ticket->getId(); ?>"><i class="icon-edit"></i> <?php echo __('Edit'); ?></a>
+                <a class="action-button pull-right" href="tickets.php?id=<?php  //  Close ticket button
+                     echo $ticket->getId(); ?>&action=close">  <i class="icon-remove"></i> <?php echo __('Close'); ?></a>
 <?php } ?>
 </div>
             </h1>
