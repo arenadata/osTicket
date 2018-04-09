@@ -163,6 +163,7 @@ echo $v;
     <div id="msg_error"><?php echo $errors['err']; ?></div>
 <?php }elseif($msg) { ?>
     <div id="msg_notice"><?php echo $msg; ?></div>
+    <script type="text/javascript">setTimeout(function(){ window.location.href = "tickets.php?id=<?php echo $ticket->getId(); ?>";}, 1200);</script>
 <?php }elseif($warn) { ?>
     <div id="msg_warning"><?php echo $warn; ?></div>
 <?php }
